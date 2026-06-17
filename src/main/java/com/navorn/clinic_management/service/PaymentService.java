@@ -3,7 +3,7 @@ package com.navorn.clinic_management.service;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-// When we use @Service it means that we can reuse that class in our whole project by injection
+// When we use @Service it means that we can reuse that class in our project by injection
 // It is a Service Class
 @Service
 public class PaymentService {
