@@ -1,14 +1,37 @@
 package com.navorn.clinic_management.model;
 
-import jakarta.persistence.Table;
+//import jakarta.persistence.Id;
+//import jakarta.persistence.Table;
+//import org.springframework.data.relational.core.mapping.Table;
 
-@Table(name = "customer")
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
+
+// When we use @Table like that it mean that java class much mapping with table database name customer
+// But we need to create table in database by my self cuz JDBC not support auto create table
+@Table(name = "bit_customers")
 public class Customer {
+    @Id
     private Long id;
     private String customerName;
     private String gender;
     private String telephone;
     private String dob;
+
+    public Customer(Long id, String customerName){
+        this.id = id;
+        this.customerName = customerName;
+    }
+    public Customer(Long id, String customerName, String gender, String telephone, String dob){
+        this.id = id;
+        this.customerName = customerName;
+        this.gender = gender;
+        this.telephone = telephone;
+        this.dob = dob;
+    }
+    public Customer(){
+
+    }
 
     public Long getId() {
         return id;
@@ -50,10 +73,6 @@ public class Customer {
         this.dob = dob;
     }
 
-    public Customer(Long id, String customerName){
-        this.id = id;
-        this.customerName = customerName;
-    }
     @Override
     public String toString(){
         return "Customer{" +
