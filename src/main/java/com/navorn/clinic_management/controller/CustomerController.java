@@ -2,6 +2,9 @@ package com.navorn.clinic_management.controller;
 
 import com.navorn.clinic_management.model.Customer;
 import com.navorn.clinic_management.service.implement.CustomerService;
+import com.navorn.clinic_management.utils.ApiResponseStructure;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,9 +53,9 @@ public class CustomerController {
 
     // Add Record
     @PostMapping()
-    public Customer addNewCustomer(@RequestBody Customer customer){
+    public ResponseEntity<Object> addNewCustomer(@RequestBody Customer customer){
         Customer obj = customerService.addNewCustomer(customer);
-        return obj;
+        return ApiResponseStructure.singleResponse("Adding new record Successfully", obj, HttpStatus.CREATED);
     }
 
     // Find all customer
@@ -63,19 +66,26 @@ public class CustomerController {
     }
 
     @GetMapping("/{customerID}")
-    public Customer findByID(@PathVariable("customerID") Long customerID){
+    public ResponseEntity<Object> findByID(@PathVariable("customerID") Long customerID){
         Customer cus = customerService.findByID(customerID);
-        return cus;
+        return ApiResponseStructure.singleResponse("Find Customer: " + customerID + " Successfully...", cus, HttpStatus.OK);
     }
 
     @PutMapping(path = "/{customerID}")
-    public Customer updateCustomer(@PathVariable("customerID") Long customerID, @RequestBody Customer objToUpdate){
-        Customer cus = customerService.updateCustomer(objToUpdate, customerID);
-        return cus;
+    public ResponseEntity<Object> updateCustomer(@PathVariable("customerID") Long customerID, @RequestBody Customer objToUpdate){
+        Customer result = customerService.updateCustomer(objToUpdate, customerID);
+        return ApiResponseStructure.singleResponse("Updated record Successfully....", result, HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "/{customerID}")
-    public Customer deleteCustomer(@PathVariable("customerID") Long customerID){
-        return customerService.deleteCustomer(customerID);
+    public ResponseEntity<Object> deleteCustomer(@PathVariable("customerID") Long customerID){
+        Customer result = customerService.deleteCustomer(customerID);
+        return ApiResponseStructure.singleResponse("Delete record Successfully", result, HttpStatus.OK);
     }
 }
+
+// Lombok is a java library, when we use it, Lombok will auto generate some build-in library annotation
+// like @Getter, @Setter, @ArgsConstructor, @Builder, @ToString
+// Install in Pom.xml
+// Plugin
+// Purpose to use Lombok is Reduce RepeatCode / BoilerPlat code

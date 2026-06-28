@@ -4,8 +4,12 @@ package com.navorn.clinic_management.model;
 //import jakarta.persistence.Table;
 //import org.springframework.data.relational.core.mapping.Table;
 
+import lombok.Getter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
+
+import java.util.Date;
 
 // When we use @Table like that it mean that java class much mapping with table database name customer
 // But we need to create table in database by my self cuz JDBC not support auto create table
@@ -17,6 +21,17 @@ public class Customer {
     private String gender;
     private String telephone;
     private String dob;
+    private int status;
+//    @Column("created_at")
+    private Date createdAt;
+//    @Column("updated_at")
+    private Date updatedAt;
+
+    public Customer(){
+//        this.status = 1;
+//        this.createdAt = new Date();
+//        this.updatedAt = new Date();
+    }
 
     public Customer(Long id, String customerName){
         this.id = id;
@@ -28,9 +43,37 @@ public class Customer {
         this.gender = gender;
         this.telephone = telephone;
         this.dob = dob;
+        this.status = 1;
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
     }
-    public Customer(){
+//    public Customer(){
+//
+//    }
 
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public Long getId() {
