@@ -3,6 +3,8 @@ package com.navorn.clinic_management.controller;
 import com.navorn.clinic_management.model.Customer;
 import com.navorn.clinic_management.service.implement.CustomerService;
 import com.navorn.clinic_management.utils.ApiResponseStructure;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,16 +55,20 @@ public class CustomerController {
 
     // Add Record
     @PostMapping()
-    public ResponseEntity<Object> addNewCustomer(@RequestBody Customer customer){
+    // Use @Valid for catch format form Fronted who make request body have Blank or empty,
+    // and it will validation not to add to DB
+    public ResponseEntity<Object> addNewCustomer(@Valid @RequestBody Customer customer){
         Customer obj = customerService.addNewCustomer(customer);
         return ApiResponseStructure.singleResponse("Adding new record Successfully", obj, HttpStatus.CREATED);
     }
 
     // Find all customer
     @GetMapping(path = "/")
-    public List<Customer> findAllCustomer(){
-        List<Customer> customerList = customerService.findAllCustomers();
-        return customerList;
+    public ResponseEntity<Object> findAllCustomer(@RequestParam("page") int page, @RequestParam("size") int size){
+//        List<Customer> customerList = customerService.findAllCustomers();
+        // Using map to change datatype form Customer to Object change customerService
+        Page<Object> objCustomer = customerService.findAllCustomers(page, size).map(customer -> (Object)customer);
+        return ApiResponseStructure.multipleResponse("List of Customer", objCustomer);
     }
 
     @GetMapping("/{customerID}")

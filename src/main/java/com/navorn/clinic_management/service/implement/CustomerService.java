@@ -4,6 +4,9 @@ import com.navorn.clinic_management.exception.RecordNotFoundException;
 import com.navorn.clinic_management.model.Customer;
 import com.navorn.clinic_management.repository.CustomerRepository;
 import com.navorn.clinic_management.service.ICustomerService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.lang.Long;
 
@@ -26,15 +29,19 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public List<Customer> findAllCustomers() {
+    public Page<Customer> findAllCustomers(int page, int size) {
 //        return List.of(
 //                new Customer(1L, "Jonh Doe"),
 //                new Customer(2L, "Alice")
 //        );
-
         // Find all or return all record from Database;
-        List<Customer> customerList  =customerRepository.findAll();
-        return customerList;
+//        List<Customer> customerList  =customerRepository.findAll();
+//        return customerList;
+
+        // Build in function in Pagination to tell spring data about page and size
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Customer> objCustomer = customerRepository.findAll(pageable);
+        return objCustomer;
     }
 
     @Override

@@ -1,13 +1,15 @@
 package com.navorn.clinic_management.configuration;
 
+import com.navorn.clinic_management.exception.MethodArgumentNotValidExceptions;
 import com.navorn.clinic_management.exception.RecordNotFoundException;
 import com.navorn.clinic_management.utils.ApiResponseStructure;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,5 +35,17 @@ public class GlobalExceptionHandler {
 //        return ResponseEntity.ok(map);
 
         return ApiResponseStructure.singleResponse(ex.getMessage(), null, HttpStatus.NOT_FOUND);
+    }
+
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    // Handle Method not argument valid exception
+    public ResponseEntity<Object> handleValidException(MethodArgumentNotValidException ex){
+        Map<String, String> map = new HashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(
+                err -> map.put(err.getField(), err.getDefaultMessage())
+        );
+        return ApiResponseStructure.errorResponse(ex.getMessage(), map, HttpStatus.BAD_REQUEST);
     }
 }

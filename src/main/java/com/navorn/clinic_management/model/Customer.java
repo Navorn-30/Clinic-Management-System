@@ -4,6 +4,9 @@ package com.navorn.clinic_management.model;
 //import jakarta.persistence.Table;
 //import org.springframework.data.relational.core.mapping.Table;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
@@ -17,9 +20,21 @@ import java.util.Date;
 public class Customer {
     @Id
     private Long id;
+    @NotBlank(message = "Customer could not blank")
     private String customerName;
+
+    @NotBlank(message = "Gender could not blank")
     private String gender;
+
+    @NotBlank(message = "Telephone could not blank")
+    @Size(min = 9, max = 10, message = "The telephone can be 9 to 10 digit")
+    @Pattern(
+            regexp = "^\\d{9,15}$",
+            message = "Invalid telephone number"
+    )
     private String telephone;
+
+    @NotBlank(message = "DOB could not blank")
     private String dob;
     private int status;
 //    @Column("created_at")
